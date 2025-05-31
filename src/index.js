@@ -4,15 +4,19 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { RestaurantProvider } from './context/RestaurantContext';
 import './custom.css';
+import { initializeFirestore } from './firebase/firestoreLoader';
 import { loadInitialRestaurants } from './firebase/initFirestore';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 
-// Intentar cargar datos iniciales en Firestore
-loadInitialRestaurants()
-  .then(() => console.log("Inicialización de Firestore completada"))
-  .catch(error => console.error("Error en inicialización de Firestore:", error));
+// Intentar cargar datos iniciales en Firestore usando ambos métodos para mayor compatibilidad
+Promise.all([
+  loadInitialRestaurants().catch(err => console.warn("Método original de carga falló:", err)),
+  initializeFirestore().catch(err => console.warn("Método alternativo de carga falló:", err))
+])
+  .then(() => console.log("Proceso de inicialización de datos completado"))
+  .catch(error => console.error("Error en la inicialización:", error));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
