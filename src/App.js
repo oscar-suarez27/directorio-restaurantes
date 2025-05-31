@@ -7,6 +7,7 @@ import NewRestaurant from './components/NewRestaurant';
 import RestaurantDetail from './components/RestaurantDetail';
 import Footer from './components/Footer';
 import './App.css';
+import './animations.css';
 
 function App() {
   return (

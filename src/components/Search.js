@@ -1,34 +1,44 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { RestaurantContext } from '../context/RestaurantContext';
 import RestaurantCard from './RestaurantCard';
 
 function Search() {
-  const { restaurants } = useContext(RestaurantContext);
+  const { searchRestaurants, searchResults, loading, error } = useContext(RestaurantContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchType, setSearchType] = useState('name');
   const [results, setResults] = useState([]);
   const [searched, setSearched] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [localError, setLocalError] = useState(null);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    let filteredResults;
-    
-    if (searchType === 'name') {
-      filteredResults = restaurants.filter(restaurant =>
-        restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    } else if (searchType === 'address') {
-      filteredResults = restaurants.filter(restaurant =>
-        restaurant.address.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    } else if (searchType === 'description') {
-      filteredResults = restaurants.filter(restaurant =>
-        restaurant.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  // Actualizar resultados cuando cambien los resultados del contexto
+  useEffect(() => {
+    if (searchResults.length > 0 || searched) {
+      setResults(searchResults);
     }
+  }, [searchResults, searched]);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    setIsSearching(true);
+    setLocalError(null);
     
-    setResults(filteredResults);
-    setSearched(true);
+    try {
+      if (!searchTerm.trim()) {
+        setResults([]);
+        setSearched(true);
+        return;
+      }
+      
+      // Usar la función de búsqueda de Firebase del contexto
+      await searchRestaurants(searchTerm);
+      setSearched(true);
+    } catch (err) {
+      setLocalError('Error al realizar la búsqueda: ' + err.message);
+      setResults([]);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   return (
@@ -42,27 +52,41 @@ function Search() {
             placeholder="Ingresa tu búsqueda..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            disabled={isSearching}
           />
-          <select 
-            className="form-select" 
-            value={searchType} 
-            onChange={(e) => setSearchType(e.target.value)}
+          <button 
+            className="btn btn-primary" 
+            type="submit"
+            disabled={isSearching}
           >
-            <option value="name">Nombre</option>
-            <option value="address">Dirección</option>
-            <option value="description">Tipo de Comida</option>
-          </select>
-          <button className="btn btn-primary" type="submit">Buscar</button>
+            {isSearching ? 'Buscando...' : 'Buscar'}
+          </button>
         </div>
       </form>
 
-      {searched && (
+      {(error || localError) && (
+        <div className="alert alert-danger" role="alert">
+          {error || localError}
+        </div>
+      )}
+
+      {loading && <p>Cargando resultados...</p>}
+
+      {searched && !loading && (
         <div>
           <h3>Resultados de búsqueda ({results.length})</h3>
           {results.length > 0 ? (
             <div className="row">
               {results.map(restaurant => (
-                <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+                <div 
+                  key={restaurant.id} 
+                  className="col-md-4 mb-4"
+                  style={{
+                    animation: `fadeIn 0.5s ease forwards`
+                  }}
+                >
+                  <RestaurantCard restaurant={restaurant} />
+                </div>
               ))}
             </div>
           ) : (

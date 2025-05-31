@@ -6,8 +6,13 @@ import './custom.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RestaurantProvider } from './context/RestaurantContext';
-import { BrowserRouter } from 'react-router-dom';
+import { loadInitialRestaurants } from './firebase/initFirestore';
 
+
+// Intentar cargar datos iniciales en Firestore
+loadInitialRestaurants()
+  .then(() => console.log("Inicialización de Firestore completada"))
+  .catch(error => console.error("Error en inicialización de Firestore:", error));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
