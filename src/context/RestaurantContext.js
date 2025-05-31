@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { restaurants as initialRestaurants } from '../data/restaurants';
-import { getRestaurants, addRestaurant as firebaseAddRestaurant, searchRestaurants as firebaseSearchRestaurants } from '../firebase/restaurantService';
+import { addRestaurant as firebaseAddRestaurant, searchRestaurants as firebaseSearchRestaurants, getRestaurants } from '../firebase/restaurantService';
 
 export const RestaurantContext = createContext();
 

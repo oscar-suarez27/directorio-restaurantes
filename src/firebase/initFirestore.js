@@ -1,7 +1,7 @@
 // Utilidad para cargar datos iniciales en Firestore
-import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
-import { db } from './config';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { restaurants as initialRestaurants } from '../data/restaurants';
+import { db } from './config';
 
 // Referencia a la colección de restaurantes
 const restaurantsCollection = collection(db, 'restaurants');

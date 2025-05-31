@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, doc, getDoc, query, where, orderBy, deleteDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from './config';
 
 // Referencia a la colección de restaurantes

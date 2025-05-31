@@ -1,12 +1,12 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './custom.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { RestaurantProvider } from './context/RestaurantContext';
+import './custom.css';
 import { loadInitialRestaurants } from './firebase/initFirestore';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 
 // Intentar cargar datos iniciales en Firestore

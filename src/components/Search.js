@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { RestaurantContext } from '../context/RestaurantContext';
 import RestaurantCard from './RestaurantCard';
 
