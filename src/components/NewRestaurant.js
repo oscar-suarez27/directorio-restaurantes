@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { RestaurantContext } from '../context/RestaurantContext';
 
 function NewRestaurant() {
-  const { addRestaurant, loading, error } = useContext(RestaurantContext);
+  const { addRestaurant, error } = useContext(RestaurantContext);
   const navigate = useNavigate();
   
   const [restaurant, setRestaurant] = useState({

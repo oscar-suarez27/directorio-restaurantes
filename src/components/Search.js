@@ -5,7 +5,7 @@ import RestaurantCard from './RestaurantCard';
 function Search() {
   const { searchRestaurants, searchResults, loading, error } = useContext(RestaurantContext);
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchType, setSearchType] = useState('name');
+  // Eliminamos las variables no utilizadas
   const [results, setResults] = useState([]);
   const [searched, setSearched] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
